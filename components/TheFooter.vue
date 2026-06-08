@@ -1,74 +1,66 @@
 <template>
-  <footer>
-    <div class="flex flex-col items-center mt-16">
-      <div class="flex mb-3 space-x-4">
+  <footer class="mt-8 border-t border-ink-700">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-5 py-10 sm:px-8"
+    >
+      <div class="flex items-center gap-5">
         <a
-          class="text-sm text-gray-500 transition hover:text-gray-600"
+          class="text-slate-500 transition hover:text-accent"
           target="_blank"
           rel="noopener noreferrer"
           :href="siteMetadata.github"
           ><span class="sr-only">github</span>
-          <img class="w-8 h-8" src="~assets/icon/github_new.svg" /> </a
-        ><a
-          class="text-sm text-gray-500 transition hover:text-gray-600"
+          <img class="footer-ico h-6 w-6" src="~assets/icon/github_new.svg" />
+        </a>
+        <a
+          class="text-slate-500 transition hover:text-accent"
           target="_blank"
           rel="noopener noreferrer"
           :href="siteMetadata.linkedin"
-          ><span class="sr-only">Linkedin</span>
-          <img class="w-8 h-8" src="~assets/icon/linkeding.svg" /> </a
-        ><a
-          class="text-sm text-gray-500 transition hover:text-gray-600"
+          ><span class="sr-only">linkedin</span>
+          <img class="footer-ico h-6 w-6" src="~assets/icon/linkeding.svg" />
+        </a>
+        <a
+          class="text-slate-500 transition hover:text-accent"
           target="_blank"
           rel="noopener noreferrer"
           :href="`mailto:${siteMetadata.email}`"
           ><span class="sr-only">mail</span>
-          <img class="w-8 h-8" src="~assets/icon/mail.svg" /></a
-        >
-        <!-- <a
-          class="text-sm text-gray-500 transition hover:text-gray-600"
+          <img class="footer-ico h-6 w-6" src="~assets/icon/mail.svg" />
+        </a>
+        <a
+          class="text-slate-500 transition hover:text-accent"
           target="_blank"
           rel="noopener noreferrer"
-          :href="siteMetadata.facebook"
-          ><span class="sr-only">facebook</span>
-          <img class="w-8 h-8" src="~assets/icon/facebook.svg"
-        /></a> -->
+          :href="siteMetadata.medium"
+          ><span class="sr-only">medium</span>
+          <img class="footer-ico h-6 w-6" src="~assets/icon/medium.svg" />
+        </a>
         <a
-          class="text-sm text-gray-500 transition hover:text-gray-600"
+          class="text-slate-500 transition hover:text-accent"
           target="_blank"
           rel="noopener noreferrer"
           :href="siteMetadata.youtube"
           ><span class="sr-only">youtube</span>
-          <img class="w-8 h-8" src="~assets/icon/youtube.svg"
-        /></a>
+          <img class="footer-ico h-6 w-6" src="~assets/icon/youtube.svg" />
+        </a>
       </div>
-      <div class="flex mb-2 space-x-2 text-sm text-gray-500 dark:text-gray-400">
-        <div>Copyright © {{ new Date().getFullYear() }}</div>
-        <div>•</div>
-        <a href="/"
-          >{{ siteMetadata.author }}'s blog - {{ siteMetadata.slogan }}</a
-        >
-      </div>
-      <div class="mb-8 text-sm text-gray-500 dark:text-gray-400">
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/mdrathik/tailwind-nuxtjs-starter-blog"
-        ></a>
-      </div>
-      <!-- <BuyMeACoffee></BuyMeACoffee> -->
+
+      <p class="font-mono text-xs text-slate-500">
+        © {{ new Date().getFullYear() }} {{ siteMetadata.author }}
+        <span class="text-slate-700">·</span> {{ siteMetadata.slogan }}
+      </p>
     </div>
   </footer>
 </template>
 
 <script>
 import siteMetaInfo from "@/data/sitemetainfo";
-import BuyMeACoffee from "./BuyMeACoffee.vue";
 export default {
   data() {
     return {
       siteMetadata: siteMetaInfo,
     };
   },
-  components: { BuyMeACoffee },
 };
 </script>

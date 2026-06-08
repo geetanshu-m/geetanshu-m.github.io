@@ -1,13 +1,13 @@
 const siteMetaInfo = {
-  title: "Geetanshu Mathur | Full Stack Engineer",
+  title: "Geetanshu Mathur | Software Engineer",
   author: "Geetanshu Mathur",
   author_image: "/author.jpeg",
-  position: "Full Stack Engineer",
-  location: "Bengaluru, India",
+  position: "Software Engineer · Distributed Systems & FinTech",
+  location: "Mumbai, India",
   headerTitle: "Geetanshu",
   slogan: "Figure it out",
   description:
-    "A tech enthusiast & self taught learner. Love to talk the way of tech.",
+    "Software engineer with 7 years building distributed systems, usage-based billing, and fintech infrastructure.",
   language: "en-us",
   theme: "system", // system, dark or light
   siteUrl: "https://geetanshu-m.github.io/",
@@ -23,6 +23,8 @@ const siteMetaInfo = {
   stackoverflow: "#",
   youtube: "https://www.youtube.com/@geetanshumathur844/featured",
   linkedin: "https://www.linkedin.com/in/geetanshumathur/",
+  medium: "https://medium.com/@mathur.geetanshu887",
+  resume: "https://drive.google.com/file/d/1rWO1sOQgW-QPsuJqRuIQferfKnsIdBeQ/view?usp=drive_link",
 };
 
 export default siteMetaInfo;

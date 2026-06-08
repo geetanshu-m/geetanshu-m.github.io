@@ -1,12 +1,11 @@
 <template>
-  <!-- Section 1 -->
-  <section class="w-full px-6 pb-12 antialiased bg-white">
-    <div class="mx-auto max-w-8xl">
-      <!-- <TheHeader /> -->
+  <div class="min-h-screen bg-ink-900 text-slate-300 flex flex-col">
+    <TheHeader />
+    <main class="flex-1 w-full">
       <Nuxt />
-      <TheFooter />
-    </div>
-  </section>
+    </main>
+    <TheFooter />
+  </div>
 </template>
 
 <script>
@@ -14,7 +13,7 @@ import TheHeader from "../components/TheHeader.vue";
 import TheFooter from "../components/TheFooter.vue";
 
 export default {
-  component: {
+  components: {
     TheHeader,
     TheFooter,
   },

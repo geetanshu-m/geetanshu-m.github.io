@@ -1,23 +1,29 @@
 <template>
-  <div class="mb-6">
-    <h2
-      class="mt-6 text-4xl text-gray-700 font-bold capitalize dark:text-blue-200"
-    >
+  <section class="mx-auto max-w-5xl px-5 py-12 sm:px-8">
+    <p class="mono-label mb-2">$ cat about.md</p>
+    <h2 class="mb-6 text-2xl font-bold text-slate-100">
       {{ authorIntro.headline }}
     </h2>
-    <p class="mt-8 mb-4 dark:bg-gray-800 dark:text-blue-200 text-justify" v-for="(line, index) in authorIntro.introduction" :key="index">
-      {{line}}
-    </p>
-  </div>
+    <div class="max-w-3xl space-y-4">
+      <p
+        v-for="(line, index) in authorIntro.introduction"
+        :key="index"
+        class="text-[15px] leading-relaxed text-slate-400"
+      >
+        {{ line }}
+      </p>
+    </div>
+  </section>
 </template>
+
 <script>
-import authourIntro from "@/data/authorIntro"
+import authourIntro from "@/data/authorIntro";
 
 export default {
   data: () => {
     return {
-      authorIntro:authourIntro 
-    }
-  }
-}
+      authorIntro: authourIntro,
+    };
+  },
+};
 </script>

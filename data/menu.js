@@ -1,7 +1,7 @@
 const menu = [
-  { name: "Home", path: "/" },
-  { name: "Projects", path: "/projects" },
-  { name: "Blog", path: "/blog" },
+  { name: "home", prefix: "", path: "/" },
+  { name: "projects", prefix: "", path: "/projects" },
+  { name: "blog", prefix: "", path: "/blog" },
 ];
 
 export default menu;

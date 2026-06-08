@@ -2,6 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink-900 text-slate-300 font-sans antialiased;
+    background-image: radial-gradient(
+        circle at 15% -10%,
+        rgba(52, 211, 153, 0.08),
+        transparent 40%
+      ),
+      radial-gradient(circle at 90% 0%, rgba(45, 212, 191, 0.05), transparent 35%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    @apply bg-accent/30 text-white;
+  }
+}
+
+@layer components {
+  .mono-label {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-accent;
+  }
+  .card {
+    @apply rounded-xl border border-ink-700 bg-ink-850/60 backdrop-blur-sm transition duration-200;
+  }
+  .card:hover {
+    @apply border-accent/40 shadow-glow;
+  }
+}
+
 .nuxt-link-exact-active {
-  @apply text-blue-500;
+  @apply text-accent;
+}
+
+/* Footer social icons load as <img>, so currentColor can't recolor them.
+   Normalize the monochrome SVGs to light gray, tint to accent on hover. */
+.footer-ico {
+  filter: brightness(0) invert(0.62);
+  transition: filter 0.2s ease;
+}
+.footer-ico:hover {
+  filter: brightness(0) saturate(100%) invert(72%) sepia(38%) saturate(617%)
+    hue-rotate(101deg) brightness(94%) contrast(89%);
+}
+
+/* Slim dark scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a212d;
+  border-radius: 6px;
+  border: 2px solid #0b0f17;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #252e3d;
 }

@@ -1,76 +1,70 @@
 <template>
-  <div class="mt-8">
-    <div class="mt-2">
-      <h2
-        class="mb-2 text-xl text-gray-700 font-bold dark:text-blue-200 capitalize"
-      >
-        Frontend
-      </h2>
+  <section class="mx-auto max-w-5xl px-5 py-12 sm:px-8">
+    <p class="mono-label mb-2">$ ls ./skills</p>
+    <h2 class="mb-8 text-2xl font-bold text-slate-100">Technical Toolbox</h2>
 
-      <ul class="flex flex-wrap gap-4 items-center">
-        <!-- <li class="flex items-center">
-          <Html class="h-10 w-10 rounded-sm drop-shadow-sm"></Html>
-        </li>
-
-        <li class="flex items-center">
-          <Css class="h-10 w-10 rounded-sm drop-shadow-sm"></Css>
-        </li> -->
-        <li class="flex items-center">
-          <Bootstrap class="h-10 w-10"></Bootstrap>
-        </li>
-        <li class="flex items-center">
-          <TailwindCss class="h-10 w-10"></TailwindCss>
-        </li>
-        <li class="flex items-center">
-          <Javascript class="h-10 w-10"></Javascript>
-        </li>
-        <li class="flex items-center">
-          <Vuejs class="h-10 w-10"></Vuejs>
-        </li>
-        <li class="flex items-center">
-          <Nuxt class="h-10 w-10"></Nuxt>
-        </li>
-      </ul>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div v-for="group in skills" :key="group.label" class="card p-5">
+        <h3 class="mb-3 font-mono text-sm font-semibold text-accent">
+          {{ group.label }}
+        </h3>
+        <ul class="flex flex-wrap gap-2">
+          <li
+            v-for="item in group.items"
+            :key="item"
+            class="rounded-md border border-ink-700 bg-ink-800 px-2.5 py-1 font-mono text-xs text-slate-300"
+          >
+            {{ item }}
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="mt-4">
-      <h2
-        class="mb-2 text-xl text-gray-700 font-bold dark:text-blue-200 capitalize"
-      >
-        Backend
-      </h2>
-      <ul class="mb-6 flex flex-wrap gap-4">
-        <li class="flex items-center">
-          <Laravel class="h-10 w-10"></Laravel>
-        </li>
-        <li class="flex items-center">
-          <Node class="h-10 w-10"></Node>
-        </li>
-      </ul>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
-import Javascript from "../assets/devicon/javascript.svg?inline";
-import Html from "../assets/devicon/html.svg?inline";
-import Css from "../assets/devicon/css.svg?inline";
-import Vuejs from "../assets/devicon/vuejs.svg?inline";
-import TailwindCss from "../assets/devicon/tailwindcss.svg?inline";
-import Nuxt from "../assets/devicon/nuxt.svg?inline";
-import Bootstrap from "../assets/devicon/bootstrap.svg?inline";
-import Laravel from "../assets/devicon/laravel.svg?inline";
-import Node from "../assets/devicon/node.svg?inline";
 export default {
-  components: {
-    Javascript,
-    Html,
-    Css,
-    Bootstrap,
-    Vuejs,
-    TailwindCss,
-    Nuxt,
-    Laravel,
-    Node,
+  data() {
+    return {
+      skills: [
+        { label: "Languages", items: ["Python", "JavaScript", "SQL"] },
+        {
+          label: "Backend",
+          items: ["Django", "Flask", "Node.js", "Express"],
+        },
+        { label: "Frontend", items: ["ReactJS", "VueJS", "TailwindCSS"] },
+        { label: "Databases", items: ["PostgreSQL", "MongoDB"] },
+        {
+          label: "Distributed Systems",
+          items: [
+            "Kafka",
+            "Event-Driven",
+            "DAG Processing",
+            "Idempotency",
+            "Concurrency Control",
+          ],
+        },
+        {
+          label: "Cloud & DevOps",
+          items: ["Docker", "Kubernetes", "AWS", "GCP"],
+        },
+        {
+          label: "Domain",
+          items: [
+            "Usage-Based Billing",
+            "Subscriptions",
+            "RBAC",
+            "Multi-Tenant",
+            "Payments",
+            "KYC",
+          ],
+        },
+        {
+          label: "Machine Learning",
+          items: ["NLU", "Intent Classification", "Entity Extraction"],
+        },
+      ],
+    };
   },
 };
 </script>

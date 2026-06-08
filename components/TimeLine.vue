@@ -1,100 +1,147 @@
 <template>
-  <div class="opacity-100 mt-10">
-    <ol class="relative border-l border-gray-200 dark:border-gray-700">
-      <li class="mb-10 ml-6">
+  <section class="mx-auto max-w-5xl px-5 py-12 sm:px-8">
+    <p class="mono-label mb-2">$ git log --experience</p>
+    <h2 class="mb-8 text-2xl font-bold text-slate-100">Experience</h2>
+
+    <ol class="relative border-l border-ink-700">
+      <li
+        v-for="(job, i) in timeline"
+        :key="i"
+        class="mb-9 ml-6 last:mb-0"
+      >
         <span
-          class="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
-        >
-          <img
-            class="w-3 h-3 text-blue-600 dark:text-blue-400"
-            src="~assets/icon/academy.svg"
-          />
-        </span>
-        <h3
-          class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white"
-        >
-          Software Engineer at FANG
+          class="absolute -left-[7px] mt-1.5 h-3.5 w-3.5 rounded-full border-2 border-ink-900"
+          :class="job.current ? 'bg-accent' : 'bg-ink-500'"
+        ></span>
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h3 class="text-lg font-semibold text-slate-100">
+            {{ job.role }}
+          </h3>
           <span
-            class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3"
-            >Currently</span
+            v-if="job.current"
+            class="rounded bg-accent/15 px-2 py-0.5 font-mono text-xs font-medium text-accent"
+            >current</span
           >
-        </h3>
-        <time
-          class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-          >2018-Currently</time
+        </div>
+        <p class="font-mono text-sm text-accent/80">{{ job.org }}</p>
+        <time class="mt-0.5 block font-mono text-xs text-slate-500">{{
+          job.period
+        }}</time>
+        <p
+          v-if="job.summary"
+          class="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400"
         >
-        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-          Get access to over 20+ pages including a dashboard layout, charts,
-          kanban board, calendar, and pre-order E-commerce & Marketing pages.
+          {{ job.summary }}
         </p>
-      </li>
-      <li class="mb-10 ml-6">
-        <span
-          class="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+        <ul
+          v-if="job.highlights"
+          class="mt-3 max-w-2xl space-y-1.5"
         >
-          <img
-            class="w-3 h-3 text-blue-600 dark:text-blue-400"
-            src="~assets/icon/academy.svg"
-          />
-        </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-          Freelancer
-        </h3>
-        <time
-          class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-          >Released on December 7th, 2021</time
-        >
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-          All of the pages and components are first designed in Figma and we
-          keep a parity between the two versions even as we update the project.
-        </p>
-      </li>
-      <li class="mb-10 ml-6">
-        <span
-          class="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
-        >
-          <img
-            class="w-3 h-3 text-blue-600 dark:text-blue-400"
-            src="~assets/icon/academy.svg"
-          />
-        </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-          2013 - Dhaka University
-        </h3>
-        <time
-          class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-          >2013 - 2018
-        </time>
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-          Studied "BSC in Computer Science and Engineering" in Dhaka University.
-        </p>
-      </li>
-      <li class="mb-10 ml-6">
-        <span
-          class="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
-        >
-          <img
-            class="w-3 h-3 text-blue-600 dark:text-blue-400"
-            src="~assets/icon/home.svg"
-          />
-        </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-          Born in 1996, July 27
-        </h3>
-        <time
-          class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-          >Dhaka Bangladesh</time
-        >
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-          I couldn't remember any productive work in that time. But
-        </p>
+          <li
+            v-for="(point, p) in job.highlights"
+            :key="p"
+            class="flex gap-2 text-sm leading-relaxed text-slate-400"
+          >
+            <span class="mt-2 h-1 w-1 flex-none rounded-full bg-accent/60"></span>
+            <span>{{ point }}</span>
+          </li>
+        </ul>
       </li>
     </ol>
-  </div>
+  </section>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      timeline: [
+        {
+          role: "Software Engineer 3",
+          org: "Fynd · Mumbai",
+          period: "April 2025 — Present",
+          current: true,
+          summary:
+            "Promoted to SDE 3. Owned the metering, subscription, and payment platform behind Fynd's central billing console.",
+          highlights: [
+            "Architected and scaled a distributed real-time metering system processing ~5M events/second — partitioning, batching, concurrency control, and horizontal scaling for deterministic usage-based billing.",
+            "Designed fault-tolerant event-processing pipelines with backpressure handling, idempotency guarantees, and retry-safe mechanisms to keep billing correct under high throughput.",
+            "Co-architected a centralized control plane unifying authentication, authorization, subscription lifecycle, and payment orchestration across independently deployed products.",
+            "Designed a multi-tenant identity and account consolidation model, mapping isolated product users into a unified cross-product account system with strict access boundaries.",
+            "Implemented subscription lifecycle state machines and integrated Paddle & Razorpay with resilient webhook handling and eventual-consistency safeguards.",
+            "Built a configurable pricing and plan management system — feature quotas, usage limits, dynamic discounts, and extensible billing rules.",
+            "Designed and enforced a fine-grained RBAC framework with hierarchical role modeling and scoped permissions for multi-persona access control.",
+            "Developed an AI-assisted operational layer integrating LLM workflows with transactional systems, enabling safe discounting and plan mutations via controlled action pipelines.",
+          ],
+        },
+        {
+          role: "Software Engineer 2",
+          org: "Fynd · Mumbai",
+          period: "November 2022 — April 2025",
+          current: false,
+          summary:
+            "Built the distributed data-orchestration backbone for cross-service migrations and import/export workflows, and led production hardening across services.",
+          highlights: [
+            "Architected a distributed data orchestration platform for cross-environment data migration across microservices, ensuring referential integrity and dependency-safe execution.",
+            "Modeled inter-service entity dependencies as a Directed Acyclic Graph (DAG) and implemented topological sorting to parallelize non-dependent operations, significantly improving import/export throughput.",
+            "Evolved the orchestration system from a monolithic prototype to a horizontally scalable worker cluster with task scheduling, retry isolation, and dependency-aware cascade operations.",
+            "Led complex production debugging and performance optimization across services, improving reliability, latency characteristics, and operational observability.",
+          ],
+        },
+        {
+          role: "Senior Software Engineer",
+          org: "Decentro · Remote",
+          period: "June 2021 — November 2022",
+          current: false,
+          summary: "Banking infrastructure and identity verification for a fintech-API platform.",
+          highlights: [
+            "Architected and enhanced bank integrations for nodal and escrow account infrastructure, strengthening virtual account provisioning and reconciliation workflows.",
+            "Designed secure encryption and decryption pipelines using public–private key cryptography for compliant data exchange.",
+            "Led expansion of the KYC verification platform by integrating multiple providers to improve redundancy and regulatory coverage.",
+            "Introduced structured schema validation and contract enforcement to improve fault tolerance and reliability.",
+            "Refactored legacy services for improved modularity, observability, and performance under production load.",
+          ],
+        },
+        {
+          role: "Software Engineer 2",
+          org: "Linarc · Chennai",
+          period: "July 2019 — June 2021",
+          current: false,
+          summary: "Document-processing and collaboration features for a construction SaaS platform.",
+          highlights: [
+            "Architected and developed an Architectural Project Plan Parser with end-to-end PDF processing pipelines for structured retrieval.",
+            "Designed ingestion workflows converting unstructured architectural drawings into indexed, searchable entities.",
+            "Built a Request for Information (RFI) module with contextual linking to plans, improving traceability and communication.",
+            "Developed a real-time messaging system integrated within the SaaS platform.",
+          ],
+        },
+        {
+          role: "Machine Learning Intern",
+          org: "Vahan · Bengaluru",
+          period: "January 2019 — July 2019",
+          current: false,
+          summary: "Natural language understanding for production conversational workflows.",
+          highlights: [
+            "Improved the existing NLU system by enhancing intent classification and entity extraction using data augmentation, class rebalancing, hyperparameter tuning, and contextual embeddings.",
+            "Conducted systematic error analysis and model refinement, reducing misclassification and fallback rates in production chat workflows.",
+            "Built automated pipelines to aggregate and analyze daily chat metrics, providing visibility into intent distribution and accuracy trends.",
+            "Developed reporting dashboards translating conversational analytics into actionable product and operational improvements.",
+          ],
+        },
+        {
+          role: "B.Tech, Computer Science",
+          org: "JK Lakshmipat University",
+          period: "2015 — 2019",
+          current: false,
+          highlights: [
+            "Google Summer of Code — selected among ~1200 students globally; contributed an image manipulation plugin to the Joomla open-source organization.",
+            "Core coursework: Distributed Systems, DBMS, Operating Systems, and Computer Networking.",
+          ],
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style></style>
