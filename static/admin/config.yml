@@ -15,7 +15,7 @@ public_folder: /uploads
 
 # Local editing without GitHub login: run `npx decap-server` (port 8081)
 # alongside `npm run dev`, then open /admin/. Re-comment before deploying.
-local_backend: true
+# local_backend: true
 
 collections:
   # ---- Site settings (identity, links, nav) ----
