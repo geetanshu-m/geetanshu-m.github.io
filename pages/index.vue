@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import siteMetaInfo from "@/data/sitemetainfo";
-import projectsData from "@/data/projects";
+import siteMetaInfo from "@/data/settings.json";
+import projectsData from "@/data/projects.json";
 export default {
   data() {
     return {
       siteMetaInfo,
-      featured: projectsData.slice(0, 3),
+      featured: projectsData.items.slice(0, 3),
     };
   },
   head: {

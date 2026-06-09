@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import meta from "@/data/sitemetainfo";
+import meta from "@/data/settings.json";
 export default {
   data: () => ({ meta }),
 };

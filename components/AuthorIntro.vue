@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import authourIntro from "@/data/authorIntro";
+import authorIntro from "@/data/authorIntro.json";
 
 export default {
   data: () => {
     return {
-      authorIntro: authourIntro,
+      authorIntro,
     };
   },
 };

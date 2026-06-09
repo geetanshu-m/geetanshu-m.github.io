@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import projectsData from "../data/projects";
+import projectsData from "../data/projects.json";
 export default {
   data() {
     return {
-      projectsData: projectsData,
+      projectsData: projectsData.items,
     };
   },
   head: {

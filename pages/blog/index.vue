@@ -69,12 +69,12 @@
 </template>
 
 <script>
-import mediumArticles from "@/data/mediumArticles";
-import siteMetaInfo from "@/data/sitemetainfo";
+import mediumArticles from "@/data/mediumArticles.json";
+import siteMetaInfo from "@/data/settings.json";
 export default {
   data() {
     return {
-      articles: mediumArticles,
+      articles: mediumArticles.items,
       medium: siteMetaInfo.medium,
     };
   },

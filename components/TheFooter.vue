@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import siteMetaInfo from "@/data/sitemetainfo";
+import siteMetaInfo from "@/data/settings.json";
 export default {
   data() {
     return {

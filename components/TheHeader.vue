@@ -38,15 +38,14 @@
 </template>
 
 <script>
-import menu from "../data/menu";
-import siteMetaInfo from "@/data/sitemetainfo";
+import settings from "@/data/settings.json";
 
 export default {
   name: "TheHeader",
   data() {
     return {
-      navLinks: menu,
-      resume: siteMetaInfo.resume,
+      navLinks: settings.menu,
+      resume: settings.resume,
     };
   },
 };

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="7" fill="#0b0f17"/>
-  <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.25" fill="none" stroke="#34d399" stroke-opacity="0.35" stroke-width="1.5"/>
-  <!-- terminal prompt chevron -->
-  <path d="M8 10.5 L14 16 L8 21.5" fill="none" stroke="#34d399" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- underscore cursor -->
-  <rect x="16.5" y="19.5" width="8" height="2.6" rx="1.3" fill="#34d399"/>
-</svg>

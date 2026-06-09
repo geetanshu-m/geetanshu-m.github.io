@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "title": "Real-Time Usage-Based Billing Platform",
+      "description": "High-throughput distributed metering system with deterministic accounting, scalable aggregation, idempotent processing, and retry-safe guarantees.",
+      "href": "#",
+      "github": "#",
+      "tech1": "Kafka",
+      "tech2": "Python",
+      "tech3": "PostgreSQL"
+    },
+    {
+      "title": "Centralized Subscription Control Plane",
+      "description": "Unified authentication, authorization, subscription lifecycle orchestration, and payment gateway integration (Paddle, Razorpay) across SaaS products.",
+      "href": "#",
+      "github": "#",
+      "tech1": "Node.js",
+      "tech2": "RBAC",
+      "tech3": "PostgreSQL"
+    },
+    {
+      "title": "DAG-Based Distributed Orchestration Engine",
+      "description": "Dependency-aware execution engine modeling inter-service relationships as directed acyclic graphs with topological scheduling and retry isolation.",
+      "href": "#",
+      "github": "#",
+      "tech1": "Python",
+      "tech2": "DAG",
+      "tech3": "Workers"
+    },
+    {
+      "title": "Multi-Provider KYC Platform",
+      "description": "Integrated multiple identity verification providers with structured schema enforcement and compliance controls for redundancy and regulatory coverage.",
+      "href": "#",
+      "github": "#",
+      "tech1": "Node.js",
+      "tech2": "Crypto",
+      "tech3": "REST"
+    },
+    {
+      "title": "Architectural Project Plan Parser",
+      "description": "End-to-end PDF processing pipeline converting unstructured architectural drawings into indexed, searchable entities, with an RFI module for contextual traceability.",
+      "href": "#",
+      "github": "#",
+      "tech1": "Python",
+      "tech2": "PDF",
+      "tech3": "Search"
+    },
+    {
+      "title": "Joomla Image Manipulation Plugin (GSoC)",
+      "description": "Google Summer of Code project for the Joomla open-source organization — an image manipulation plugin built as part of the program.",
+      "href": "#",
+      "github": "#",
+      "tech1": "PHP",
+      "tech2": "Joomla",
+      "tech3": "OSS"
+    }
+  ]
+}

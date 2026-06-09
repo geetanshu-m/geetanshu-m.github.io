@@ -36,7 +36,7 @@
 </template>
 <script>
 import Prism from "~/plugins/prism";
-import siteMetaInfo from "@/data/sitemetainfo";
+import siteMetaInfo from "@/data/settings.json";
 export default {
   data() {
     return {
