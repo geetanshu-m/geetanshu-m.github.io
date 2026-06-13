@@ -1,32 +1,44 @@
 {
   "title": "Geetanshu Mathur | Software Engineer",
-  "author": "Geetanshu Mathur",
-  "author_image": "/author.jpeg",
+  "author": "Geetanshu",
   "position": "Software Engineer · Distributed Systems & FinTech",
   "location": "Mumbai, India",
   "headerTitle": "Geetanshu",
   "slogan": "Figure it out",
   "description": "Software engineer with 7 years building distributed systems, usage-based billing, and fintech infrastructure.",
-  "language": "en-us",
-  "theme": "system",
-  "siteUrl": "https://geetanshu-m.github.io/",
-  "siteRepo": "#",
-  "siteLogo": "../assets/author.png",
-  "image": "~/assets/author.png",
-  "socialBanner": "/static/images/twitter-card.png",
   "email": "mathur.geetanshu887@gmail.com",
+  "resume": "https://drive.google.com/file/d/1rWO1sOQgW-QPsuJqRuIQferfKnsIdBeQ/view?usp=drive_link",
   "github": "https://github.com/geetanshu-m",
   "githubUser": "geetanshu-m",
+  "linkedin": "https://www.linkedin.com/in/geetanshumathur/",
+  "medium": "https://medium.com/@mathur.geetanshu887",
+  "youtube": "https://www.youtube.com/@geetanshumathur844/featured",
   "twitter": "#",
   "twitter_user": "#",
   "stackoverflow": "#",
-  "youtube": "https://www.youtube.com/@geetanshumathur844/featured",
-  "linkedin": "https://www.linkedin.com/in/geetanshumathur/",
-  "medium": "https://medium.com/@mathur.geetanshu887",
-  "resume": "https://drive.google.com/file/d/1rWO1sOQgW-QPsuJqRuIQferfKnsIdBeQ/view?usp=drive_link",
+  "siteUrl": "https://geetanshu-m.github.io/",
+  "siteRepo": "#",
+  "author_image": "/author.jpeg",
+  "siteLogo": "../assets/author.png",
+  "image": "~/assets/author.png",
+  "socialBanner": "/static/images/twitter-card.png",
+  "language": "en-us",
+  "theme": "system",
   "menu": [
-    { "name": "home", "prefix": "", "path": "/" },
-    { "name": "projects", "prefix": "", "path": "/projects" },
-    { "name": "blog", "prefix": "", "path": "/blog" }
+    {
+      "name": "home",
+      "path": "/",
+      "prefix": ""
+    },
+    {
+      "name": "projects",
+      "path": "/projects",
+      "prefix": ""
+    },
+    {
+      "name": "blog",
+      "path": "/blog",
+      "prefix": ""
+    }
   ]
 }
