@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>admin · Geetanshu Mathur</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+              mono: ["JetBrains Mono", "ui-monospace", "Menlo", "monospace"],
+            },
+            colors: {
+              ink: {
+                950: "#070a0f", 900: "#0b0f17", 850: "#0e131c", 800: "#11161f",
+                700: "#1a212d", 600: "#252e3d", 500: "#3a4658",
+              },
+              accent: { DEFAULT: "#34d399", soft: "#6ee7b7", dim: "#10b981" },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root { color-scheme: dark; }
+      body { background: #070a0f; }
+      ::-webkit-scrollbar { width: 10px; height: 10px; }
+      ::-webkit-scrollbar-thumb { background: #1a212d; border-radius: 6px; }
+      ::-webkit-scrollbar-thumb:hover { background: #252e3d; }
+      input, textarea, select { color-scheme: dark; }
+      textarea { resize: vertical; }
+      select option { background: #0e131c; }
+    </style>
+  </head>
+  <body class="font-sans text-slate-200">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar -->
+      <aside class="w-52 shrink-0 border-r border-ink-700 bg-ink-900 flex flex-col">
+        <div class="px-5 py-4 border-b border-ink-700">
+          <div class="font-mono text-sm">
+            <span class="text-accent">&gt;</span>
+            <span class="text-slate-100 font-semibold">admin</span>
+            <span class="text-accent animate-pulse">_</span>
+          </div>
+          <div class="text-[11px] text-slate-500 mt-1 font-mono">local · :4787</div>
+        </div>
+        <nav id="nav" class="flex-1 overflow-y-auto py-2"></nav>
+        <div class="px-5 py-3 border-t border-ink-700 text-[11px] text-slate-500 font-mono leading-relaxed">
+          edits write to <span class="text-slate-400">data/*.json</span>.<br />
+          commit &amp; push yourself.
+        </div>
+      </aside>
+
+      <!-- Editor column -->
+      <main class="w-[46%] min-w-[440px] flex flex-col overflow-hidden border-r border-ink-700">
+        <header class="shrink-0 h-14 border-b border-ink-700 bg-ink-900/80 backdrop-blur flex items-center justify-between px-6">
+          <div>
+            <h1 id="section-title" class="font-mono text-slate-100 text-sm font-semibold">—</h1>
+            <p id="section-where" class="text-[11px] text-slate-500"></p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="toast" class="text-xs font-mono opacity-0 transition-opacity"></span>
+            <button id="save-btn"
+              class="font-mono text-xs px-3 py-1.5 rounded-md border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 disabled:opacity-30 disabled:cursor-not-allowed transition">
+              save
+            </button>
+          </div>
+        </header>
+        <section id="form" class="flex-1 overflow-y-auto px-6 py-6"></section>
+      </main>
+
+      <!-- Live preview -->
+      <section class="flex-1 flex flex-col overflow-hidden bg-ink-950">
+        <header class="shrink-0 h-14 border-b border-ink-700 bg-ink-900/80 backdrop-blur flex items-center justify-between px-5">
+          <div class="min-w-0">
+            <div class="font-mono text-[11px] text-slate-500">live preview</div>
+            <div id="preview-url" class="font-mono text-xs text-slate-300 truncate">localhost:3000</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <a id="preview-open" href="#" target="_blank"
+              class="font-mono text-[11px] text-slate-500 hover:text-slate-300">open ↗</a>
+            <button id="preview-reload"
+              class="font-mono text-xs px-2.5 py-1.5 rounded-md border border-ink-600 text-slate-400 hover:text-slate-100 hover:border-ink-500 transition">
+              ⟳ reload
+            </button>
+          </div>
+        </header>
+        <div class="relative flex-1">
+          <iframe id="preview" class="w-full h-full bg-white" title="site preview"></iframe>
+          <div id="preview-hint" class="absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[11px] text-slate-500 bg-ink-900/90 border border-ink-700 rounded-full px-3 py-1">
+            blank? run <span class="text-slate-300">npm run dev</span> (localhost:3000)
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module">
+      import { sections } from "./schema.mjs";
+
+      const DEV_ORIGIN = "http://localhost:3000";
+      const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+      const byId = Object.fromEntries(sections.map((s) => [s.id, s]));
+      const state = { data: {}, original: {}, active: sections[0].id };
+
+      const el = (tag, cls, props = {}) =>
+        Object.assign(document.createElement(tag), { className: cls || "" }, props);
+
+      const isDirty = (id) => JSON.stringify(state.data[id]) !== state.original[id];
+
+      // ---- period (daterange) parse / serialize ----------------------------
+      function parseSide(s) {
+        s = (s || "").trim();
+        if (/present/i.test(s)) return { present: true, month: "", year: "" };
+        const tokens = s.split(/\s+/).filter(Boolean);
+        const month = tokens.find((t) => MONTHS.some((m) => m.toLowerCase() === t.toLowerCase())) || "";
+        const year = tokens.find((t) => /^\d{4}$/.test(t)) || "";
+        return { present: false, month: month ? MONTHS.find((m) => m.toLowerCase() === month.toLowerCase()) : "", year };
+      }
+      function parsePeriod(str) {
+        const parts = (str || "").split(/[—–]/);
+        return { start: parseSide(parts[0] || ""), end: parseSide(parts[1] || "") };
+      }
+      function serializeSide(side) {
+        if (side.present) return "Present";
+        return [side.month, side.year].filter(Boolean).join(" ");
+      }
+      function serializePeriod(p) {
+        return [serializeSide(p.start), serializeSide(p.end)].filter(Boolean).join(" — ");
+      }
+
+      // ---- shared styles ----------------------------------------------------
+      const inputCls = "w-full bg-ink-850 border border-ink-700 rounded-md px-3 py-2 text-sm text-slate-100 font-mono focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition";
+      const miniCls = "bg-ink-850 border border-ink-700 rounded-md px-2 py-1.5 text-sm text-slate-100 font-mono focus:outline-none focus:border-accent/50";
+
+      function labelEl(text) {
+        return el("label", "block font-mono text-[11px] uppercase tracking-wide text-slate-500 mb-1.5", { textContent: text });
+      }
+      function hintEl(text) {
+        return el("p", "text-[11px] text-slate-500 mt-1", { textContent: text });
+      }
+
+      // ---- primitive inputs -------------------------------------------------
+      function stringInput(value, onChange) {
+        const inp = el("input", inputCls, { type: "text", value: value ?? "" });
+        inp.oninput = () => onChange(inp.value);
+        return inp;
+      }
+      function textInput(value, onChange, rows = 3) {
+        const ta = el("textarea", inputCls, { rows, value: value ?? "" });
+        ta.oninput = () => onChange(ta.value);
+        return ta;
+      }
+      function boolInput(value, onChange) {
+        const wrap = el("label", "inline-flex items-center gap-2 cursor-pointer select-none");
+        const cb = el("input", "accent-accent w-4 h-4", { type: "checkbox", checked: !!value });
+        cb.onchange = () => onChange(cb.checked);
+        wrap.append(cb, el("span", "text-xs font-mono text-slate-400", { textContent: "enabled" }));
+        return wrap;
+      }
+
+      // ---- list-as-textarea (lines) ----------------------------------------
+      function linesInput(arr, onChange) {
+        const value = (Array.isArray(arr) ? arr : []).join("\n");
+        const ta = el("textarea", inputCls + " leading-relaxed", {
+          rows: Math.min(Math.max((Array.isArray(arr) ? arr.length : 1) + 1, 3), 14),
+          value,
+        });
+        ta.oninput = () => onChange(ta.value.split("\n"));
+        return ta;
+      }
+
+      // ---- csv (comma separated) -------------------------------------------
+      function csvInput(arr, onChange) {
+        const value = (Array.isArray(arr) ? arr : []).join(", ");
+        const inp = el("input", inputCls, { type: "text", value });
+        inp.oninput = () => onChange(inp.value.split(",").map((s) => s.trim()));
+        return inp;
+      }
+
+      // ---- daterange --------------------------------------------------------
+      function monthSelect(selected, onChange) {
+        const sel = el("select", miniCls);
+        sel.append(el("option", "", { value: "", textContent: "Month" }));
+        for (const m of MONTHS) sel.append(el("option", "", { value: m, textContent: m, selected: m === selected }));
+        sel.onchange = () => onChange(sel.value);
+        return sel;
+      }
+      function yearInput(value, onChange) {
+        const inp = el("input", miniCls + " w-20", { type: "text", inputMode: "numeric", maxLength: 4, placeholder: "Year", value: value ?? "" });
+        inp.oninput = () => onChange(inp.value.replace(/[^\d]/g, "").slice(0, 4));
+        return inp;
+      }
+      function dateRangeInput(value, onChange) {
+        const wrap = el("div", "space-y-2");
+        const model = parsePeriod(value);
+        const emit = () => onChange(serializePeriod(model));
+
+        const build = () => {
+          wrap.replaceChildren();
+
+          // Start row
+          const startRow = el("div", "flex items-center gap-2");
+          startRow.append(el("span", "font-mono text-[11px] text-slate-500 w-10", { textContent: "start" }));
+          startRow.append(
+            monthSelect(model.start.month, (v) => { model.start.month = v; emit(); }),
+            yearInput(model.start.year, (v) => { model.start.year = v; emit(); })
+          );
+          wrap.append(startRow);
+
+          // End row
+          const endRow = el("div", "flex items-center gap-2 flex-wrap");
+          endRow.append(el("span", "font-mono text-[11px] text-slate-500 w-10", { textContent: "end" }));
+          const presentWrap = el("label", "inline-flex items-center gap-1.5 cursor-pointer select-none");
+          const cb = el("input", "accent-accent w-4 h-4", { type: "checkbox", checked: !!model.end.present });
+          cb.onchange = () => {
+            model.end.present = cb.checked;
+            emit();
+            build();
+          };
+          presentWrap.append(cb, el("span", "text-[11px] font-mono text-slate-400", { textContent: "Present" }));
+          endRow.append(presentWrap);
+          if (!model.end.present) {
+            endRow.append(
+              monthSelect(model.end.month, (v) => { model.end.month = v; emit(); }),
+              yearInput(model.end.year, (v) => { model.end.year = v; emit(); })
+            );
+          }
+          wrap.append(endRow);
+
+          wrap.append(el("p", "font-mono text-[11px] text-slate-600", { textContent: serializePeriod(model) || "—" }));
+        };
+
+        build();
+        return wrap;
+      }
+
+      // ---- field dispatch ---------------------------------------------------
+      function renderField(container, field, obj) {
+        const wrap = el("div", "mb-5");
+        const w = field.widget;
+        if (w !== "boolean") wrap.append(labelEl(field.label || field.name));
+
+        let node;
+        if (w === "list") node = renderList(field, obj);
+        else if (w === "lines") node = linesInput(obj[field.name], (v) => set(obj, field.name, v));
+        else if (w === "csv") node = csvInput(obj[field.name], (v) => set(obj, field.name, v));
+        else if (w === "daterange") node = dateRangeInput(obj[field.name], (v) => set(obj, field.name, v));
+        else if (w === "boolean") { wrap.append(labelEl(field.label || field.name)); node = boolInput(obj[field.name], (v) => set(obj, field.name, v)); }
+        else if (w === "text") node = textInput(obj[field.name], (v) => set(obj, field.name, v));
+        else node = stringInput(obj[field.name], (v) => set(obj, field.name, v));
+
+        wrap.append(node);
+        if (field.hint) wrap.append(hintEl(field.hint));
+        container.append(wrap);
+      }
+
+      function set(obj, key, value) {
+        obj[key] = value;
+        touch();
+      }
+
+      // ---- list of objects --------------------------------------------------
+      function renderList(field, parent) {
+        if (!Array.isArray(parent[field.name])) parent[field.name] = [];
+        const arr = parent[field.name];
+        const box = el("div", "space-y-2");
+
+        arr.forEach((item, i) => {
+          const row = el("div", "rounded-md border border-ink-700 bg-ink-900/60 p-3");
+          const head = el("div", "flex items-center gap-2 mb-2");
+          head.append(
+            el("span", "font-mono text-[11px] text-slate-500 truncate", {
+              textContent: `${field.itemLabel || "item"} ${i + 1}${field.summary ? " — " + field.summary(item) : ""}`,
+            }),
+            el("div", "flex-1"),
+            iconBtn("↑", () => move(arr, i, -1)),
+            iconBtn("↓", () => move(arr, i, 1)),
+            iconBtn("✕", () => { arr.splice(i, 1); touch(); render(); }, "hover:text-red-400")
+          );
+          row.append(head);
+          (field.fields || []).forEach((sub) => renderField(row, sub, item));
+          box.append(row);
+        });
+
+        const add = el("button", "font-mono text-[11px] text-accent/80 hover:text-accent border border-dashed border-ink-600 hover:border-accent/40 rounded-md px-3 py-1.5 transition", {
+          textContent: `+ add ${field.itemLabel || "item"}`,
+        });
+        add.onclick = () => { arr.push(blankObject(field.fields || [])); touch(); render(); };
+        box.append(add);
+        return box;
+      }
+
+      function iconBtn(glyph, onClick, extra = "") {
+        const b = el("button", `font-mono text-xs text-slate-500 hover:text-slate-200 w-6 h-6 rounded transition ${extra}`, { textContent: glyph });
+        b.onclick = onClick;
+        return b;
+      }
+      function move(arr, i, dir) {
+        const j = i + dir;
+        if (j < 0 || j >= arr.length) return;
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+        touch();
+        render();
+      }
+      function blankObject(fields) {
+        const o = {};
+        for (const f of fields) {
+          if (f.widget === "list" || f.widget === "lines" || f.widget === "csv") o[f.name] = [];
+          else if (f.widget === "boolean") o[f.name] = false;
+          else o[f.name] = "";
+        }
+        return o;
+      }
+
+      // Strip blank entries from lines/csv arrays before saving so the site
+      // never renders empty bullets/tags. Mutates a clone, not live state.
+      function normalize(fields, obj) {
+        for (const f of fields || []) {
+          const v = obj[f.name];
+          if ((f.widget === "lines" || f.widget === "csv") && Array.isArray(v)) {
+            obj[f.name] = v.map((s) => String(s)).filter((s) => s.trim().length);
+          } else if (f.widget === "list" && Array.isArray(v)) {
+            v.forEach((item) => normalize(f.fields, item));
+          }
+        }
+        return obj;
+      }
+
+      // ---- render orchestration --------------------------------------------
+      function touch() {
+        renderNav();
+        document.getElementById("save-btn").disabled = !isDirty(state.active);
+      }
+
+      function renderNav() {
+        const nav = document.getElementById("nav");
+        nav.replaceChildren();
+        for (const s of sections) {
+          const active = s.id === state.active;
+          const item = el("button", `w-full text-left px-5 py-2 font-mono text-[13px] flex items-center gap-2 transition ${
+            active ? "bg-ink-800 text-accent border-l-2 border-accent" : "text-slate-400 hover:text-slate-200 hover:bg-ink-850 border-l-2 border-transparent"
+          }`);
+          item.append(
+            el("span", "text-slate-600", { textContent: active ? "›" : " " }),
+            el("span", "flex-1", { textContent: s.label })
+          );
+          if (isDirty(s.id)) item.append(el("span", "w-1.5 h-1.5 rounded-full bg-accent shrink-0"));
+          item.onclick = () => { state.active = s.id; render(); syncPreview(); };
+          nav.append(item);
+        }
+      }
+
+      function render() {
+        const s = byId[state.active];
+        document.getElementById("section-title").textContent = s.file;
+        document.getElementById("section-where").textContent = "shows on → " + (s.previewLabel || "");
+        const form = document.getElementById("form");
+        form.replaceChildren();
+        for (const field of s.fields) renderField(form, field, state.data[s.id]);
+        touch();
+      }
+
+      function toast(msg, ok = true) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = `text-xs font-mono transition-opacity ${ok ? "text-accent" : "text-red-400"} opacity-100`;
+        setTimeout(() => (t.style.opacity = "0"), 2200);
+      }
+
+      // ---- preview ----------------------------------------------------------
+      const iframe = document.getElementById("preview");
+      function previewUrl() {
+        return DEV_ORIGIN + (byId[state.active].previewPath || "/");
+      }
+      function syncPreview() {
+        const url = previewUrl();
+        if (iframe.dataset.url !== url) {
+          iframe.dataset.url = url;
+          iframe.src = url;
+        }
+        document.getElementById("preview-url").textContent = url.replace(/^https?:\/\//, "");
+        document.getElementById("preview-open").href = url;
+      }
+      function reloadPreview() {
+        // Cross-origin: force a reload by re-assigning a cache-busted src.
+        const u = new URL(previewUrl());
+        u.searchParams.set("_admin", String((Number(iframe.dataset.n) || 0) + 1));
+        iframe.dataset.n = String((Number(iframe.dataset.n) || 0) + 1);
+        iframe.src = u.toString();
+      }
+      document.getElementById("preview-reload").onclick = reloadPreview;
+
+      // ---- save -------------------------------------------------------------
+      async function save() {
+        const id = state.active;
+        const payload = normalize(byId[id].fields, structuredClone(state.data[id]));
+        try {
+          const res = await fetch(`/api/data/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || res.statusText);
+          state.data[id] = payload;            // adopt the cleaned version
+          state.original[id] = JSON.stringify(payload);
+          render();
+          toast(`saved ${json.file}`);
+          setTimeout(reloadPreview, 900);      // give Nuxt HMR a moment to rebuild
+        } catch (err) {
+          toast(`error: ${err.message}`, false);
+        }
+      }
+
+      // ---- boot -------------------------------------------------------------
+      async function boot() {
+        document.getElementById("save-btn").onclick = save;
+        try {
+          const data = await (await fetch("/api/data")).json();
+          state.data = data;
+          state.original = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, JSON.stringify(v)]));
+          render();
+          syncPreview();
+        } catch (err) {
+          document.getElementById("form").textContent = "Failed to load data: " + err.message;
+        }
+      }
+
+      boot();
+    </script>
+  </body>
+</html>
