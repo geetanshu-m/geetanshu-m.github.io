@@ -16,6 +16,22 @@ export default {
       { name: "format-detection", content: "telephone=no" },
       { name: "theme-color", content: "#0b0f17" },
     ],
+    script: [
+      {
+        src: "https://www.googletagmanager.com/gtag/js?id=G-YTWW4M480V",
+        async: true,
+      },
+      {
+        hid: "ga-init",
+        innerHTML: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YTWW4M480V');
+        `,
+      },
+    ],
+    __dangerouslyDisableSanitizers: ["script"],
     link: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
